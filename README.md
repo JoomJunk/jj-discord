@@ -1,2 +1,3 @@
-# jj-discord
-a Discord module for Joomla
+# JJ Discord Server
+
+A Discord module for Joomla

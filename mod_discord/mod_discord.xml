@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.9" client="site" method="upgrade">
+    <name>JJ Discord</name>
+    <author>JoomJunk</author>
+	<creationDate>25th July 2019</creationDate>
+	<copyright>Copyright (C) 2011 - 2019 JoomJunk</copyright>
+	<license>https://gnu.org/licenses/gpl-3.0.html</license>
+	<authorEmail>admin@joomjunk.co.uk</authorEmail>
+	<authorUrl>https://www.joomjunk.co.uk</authorUrl>
+    <version>1.0.0</version>
+    <description>JJ_DISCORD_DESCRIPTION</description>
+
+    <files>
+        <filename module="mod_discord">mod_discord.php</filename>
+        <filename>index.html</filename>
+		<folder>tmpl</folder>
+    </files>
+
+	<media folder="media" destination="mod_discord">
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_discord.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_discord.sys.ini</language>
+	</languages>
+
+	<updateservers>
+		<server type="extension" name="JJ Discord" priority="1">https://www.joomjunk.co.uk/updates/discord_update.xml</server>
+	</updateservers>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+				<field
+					name="server"
+					type="text"
+					label="JJ_DISCORD_SERVER_ID"
+					description="JJ_DISCORD_SERVER_ID_DESC" />
+
+				<field name="members" type="radio" class="btn-group" default="1" label="JJ_DISCORD_LIST_MEMBERS" description="JJ_DISCORD_LIST_MEMBERS_DESC">
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
+				</field>
+
+				<field name="game" type="radio" class="btn-group" default="1" showon="members:1" label="JJ_DISCORD_SHOW_GAME" description="JJ_DISCORD_SHOW_GAME_DESC">
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
+				</field>
+
+				<field name="members-count" type="radio" class="btn-group" default="1" label="JJ_DISCORD_COUNT_MEMBERS" description="JJ_DISCORD_COUNT_MEMBERS_DESC">
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
+				</field>
+
+				<field name="connect" type="radio" class="btn-group" default="1" label="JJ_DISCORD_CONNECT" description="JJ_DISCORD_CONNECT_DESC">
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
+				</field>
+
+				<field
+					name="height"
+					type="text"
+					label="JJ_DISCORD_HEIGHT"
+					description="JJ_DISCORD_HEIGHT_DESC" />
+
+			</fieldset>
+
+		</fields>
+	</config>
+
+</extension>
