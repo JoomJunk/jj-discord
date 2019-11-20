@@ -50,6 +50,7 @@ HTMLHelper::_('script', 'mod_discord/mod_discord.js', ['version' => 'auto', 'rel
 	Factory::getDocument()->addScriptOptions(
 		'discord',
 		[
+			'root'         => Uri::root(),
 			'server'       => $server,
 			'members'      => $members,
 			'game'         => $game,
