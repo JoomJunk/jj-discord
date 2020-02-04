@@ -39,6 +39,10 @@ gulp.task('postcss', () =>
 			autoprefixer(),
 			cssnano()
 		]))
+		.pipe(rename({
+			suffix: '.min',
+			extname: '.css',
+		}))
 		.pipe(gulp.dest('./mod_discord/media/css'))
 );
 

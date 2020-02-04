@@ -12,7 +12,7 @@
 		const settings = {
 			method: 'GET',
 			mode: 'cors',
-			cache: 'reload'
+			cache: 'reload',
 		};
 
 		if (options.server.length > 0) {
@@ -30,7 +30,8 @@
 
 					// Set the connect button link
 					if (options.connect == 1) {
-						document.getElementById('jj-discord-connect').setAttribute('href', data.instant_invite);
+						const inviteLink = data.instant_invite.replace('https', 'discord');
+						document.getElementById('jj-discord-connect').setAttribute('href', inviteLink);
 					}
 
 					// Create a new object with the channel_id as the key
@@ -39,7 +40,7 @@
 						channels[id] = {
 							position: position,
 							name: name,
-							members: []
+							members: [],
 						};
 					});
 
