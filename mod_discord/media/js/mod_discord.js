@@ -12,7 +12,7 @@
 		const settings = {
 			method: 'GET',
 			mode: 'cors',
-			cache: 'reload'
+			cache: 'reload',
 		};
 
 		if (options.server.length > 0) {
@@ -40,7 +40,7 @@
 						channels[id] = {
 							position: position,
 							name: name,
-							members: []
+							members: [],
 						};
 					});
 
