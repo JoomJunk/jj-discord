@@ -1,7 +1,7 @@
 ﻿<?php
 /**
 * @package    JJ_Discord
-* @copyright  Copyright (C) 2011 - 2019 JoomJunk. All rights reserved.
+* @copyright  Copyright (C) 2011 - 2022 JoomJunk. All rights reserved.
 * @license    GPL v3.0 or later https://www.gnu.org/licenses/gpl-3.0.html
 */
 
@@ -12,10 +12,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('stylesheet', 'mod_discord/mod_discord.css', ['version' => 'auto', 'relative' => true]);
-HTMLHelper::_('script', 'mod_discord/mod_discord.js', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('script', 'mod_discord/mod_discord.js', ['version' => 'auto', 'relative' => true], ['type' => 'module']);
 ?>
 
-<h3 class="uk-panel-title page-header"><img src="<?php echo Uri::root() . 'media/mod_discord/images/logo.svg'; ?>" alt=""> Discord</h3>
+<div class="jj-flex jj-discord-title">
+	<img src="<?php echo Uri::root() . 'media/mod_discord/images/logo.svg'; ?>" alt="">
+	<h3>Discord</h3>
+</div>
 
 <?php if (isset($server)) : ?>
 	<?php if ($membersCount == 1) : ?>
@@ -38,8 +41,8 @@ HTMLHelper::_('script', 'mod_discord/mod_discord.js', ['version' => 'auto', 'rel
 	</div>
 
 	<?php if ($connect == 1) : ?>
-		<div class="clearfix uk-clearfix">
-			<a href="#" id="jj-discord-connect" class="jj-float-right btn btn-primary btn-sm uk-button uk-button-primary uk-button-small" target="_blank" rel="noopener noreferrer">Connect</a>
+		<div class="jj-flex justify-content-end">
+			<a href="#" id="jj-discord-connect" class="btn btn-primary btn-sm uk-button uk-button-primary uk-button-small" target="_blank" rel="noopener noreferrer">Connect</a>
 		</div>
 	<?php endif; ?>
 <?php else : ?>
@@ -47,7 +50,7 @@ HTMLHelper::_('script', 'mod_discord/mod_discord.js', ['version' => 'auto', 'rel
 <?php endif; ?>
 
 <?php
-	Factory::getDocument()->addScriptOptions(
+	Factory::getapplication()->getDocument()->addScriptOptions(
 		'discord',
 		[
 			'root'         => Uri::root(),

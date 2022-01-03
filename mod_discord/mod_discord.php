@@ -1,7 +1,7 @@
 <?php
 /**
 * @package    JJ_Discord
-* @copyright  Copyright (C) 2011 - 2019 JoomJunk. All rights reserved.
+* @copyright  Copyright (C) 2011 - 2022 JoomJunk. All rights reserved.
 * @license    GPL v3.0 or later https://www.gnu.org/licenses/gpl-3.0.html
 */
 

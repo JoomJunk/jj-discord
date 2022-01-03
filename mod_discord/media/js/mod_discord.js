@@ -1,170 +1,165 @@
 /**
-* @package    JJ_Discord
-* @copyright  Copyright (C) 2011 - 2019 JoomJunk. All rights reserved.
-* @license    GPL v3.0 or later https://www.gnu.org/licenses/gpl-3.0.html
-*/
+ * @package    JJ_Discord
+ * @copyright  Copyright (C) 2011 - 2022 JoomJunk. All rights reserved.
+ * @license    GPL v3.0 or later https://www.gnu.org/licenses/gpl-3.0.html
+ */
 
 (() => {
-	window.addEventListener('DOMContentLoaded', () => {
+  const createAvatar = (url) => {
+    const avatar = document.createElement('img')
+    avatar.setAttribute('src', url)
+    avatar.classList.add('jj-discord-avatar')
 
-		const options = Joomla.getOptions('discord');
-		const wrapper = document.getElementById('jj-discord');
-		const settings = {
-			method: 'GET',
-			mode: 'cors',
-			cache: 'reload',
-		};
+    return avatar
+  }
 
-		if (options.server.length > 0) {
-			fetch(`https://discordapp.com/api/guilds/${options.server}/widget.json`, settings).then(response => {
-				if (response.status != 200) {
-					console.log(response.status);
-					return;
-				}
-				response.json().then(data => {
-					const users = data.members;
+  const createBotTag = () => {
+    const bot = document.createElement('span')
+    bot.classList.add('jj-discord-bot')
+    bot.innerText = 'BOT'
 
-					if (options.membersCount == 1) {
-						document.getElementById('jj-discord-count').innerHTML = `<strong>${users.length}</strong> Members Online`;
-					}
+    return bot
+  }
 
-					// Set the connect button link
-					if (options.connect == 1) {
-						const inviteLink = data.instant_invite.replace('https', 'discord');
-						document.getElementById('jj-discord-connect').setAttribute('href', inviteLink);
-					}
+  const createUsername = (user) => {
+    const username = document.createElement('span')
+    username.innerText = user.nick || user.username
 
-					// Create a new object with the channel_id as the key
-					const channels = {};
-					data.channels.forEach(({id, position, name}) => {
-						channels[id] = {
-							position: position,
-							name: name,
-							members: [],
-						};
-					});
+    return username
+  }
 
-					users.forEach(user => {
-						// Assign members connected to a channel so that specific object
-						if (user.channel_id !== undefined) {
-							channels[user.channel_id].members.push(user);
-						}
-					});
+  const options = Joomla.getOptions('discord')
+  const wrapper = document.getElementById('jj-discord')
+  const settings = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'reload',
+  }
 
-					if (options.members == 1) {
-						const membersList = document.getElementById('jj-discord-members');
+  if (options.server.length > 0) {
+    fetch(`https://discordapp.com/api/guilds/${options.server}/widget.json`, settings).then(response => {
+      if (response.status != 200) {
+        console.log(response.status)
+        return
+      }
+      response.json().then(data => {
+        const users = data.members
 
-						users.forEach(user => {
-							// Create list
-							const membersListItem = document.createElement('li');
-							membersListItem.classList.add('jj-flex', 'jj-flex-middle');
+        if (options.membersCount == 1) {
+          document.getElementById('jj-discord-count').innerHTML = `<strong>${users.length}</strong> Members Online`
+        }
 
-							const memberStatus = document.createElement('span');
-							if (user.status === 'online') {
-								memberStatus.classList.add('jj-discord-user-status', 'jj-discord-user-online');
-							}
-							else if (user.status === 'idle') {
-								memberStatus.classList.add('jj-discord-user-status', 'jj-discord-user-idle');
-							}
-							else {
-								memberStatus.classList.add('jj-discord-user-status', 'jj-discord-user-offline');
-							}
+        // Set the connect button link
+        if (options.connect == 1) {
+          const inviteLink = data.instant_invite.replace('https', 'discord')
+          document.getElementById('jj-discord-connect').setAttribute('href', inviteLink)
+        }
 
-							membersListItem.appendChild(createAvatar(user.avatar_url));
-							membersListItem.appendChild(memberStatus);
-							membersListItem.appendChild(createUsername(user));
+        // Create a new object with the channel_id as the key
+        const channels = {}
+        data.channels.forEach(({ id, position, name }) => {
+          channels[id] = {
+            position: position,
+            name: name,
+            members: [],
+          }
+        })
 
-							if (user.bot) {
-								membersListItem.appendChild(createBotTag());
-							}
+        users.forEach(user => {
+          // Assign members connected to a channel so that specific object
+          if (user.channel_id !== undefined) {
+            channels[user.channel_id].members.push(user)
+          }
+        })
 
-							if (options.game == 1 && user.game !== undefined && !user.bot) {
-								memberGame = document.createElement('span');
-								memberGame.classList.add('jj-discord-game');
-								memberGame.innerText = ` - ${user.game.name}`;
-								membersListItem.appendChild(memberGame);
-							}
+        if (options.members == 1) {
+          const membersList = document.getElementById('jj-discord-members')
 
-							membersList.appendChild(membersListItem);
-						});
-					}
+          users.forEach(user => {
+            // Create list
+            const membersListItem = document.createElement('li')
+            membersListItem.classList.add('jj-flex', 'jj-flex-middle')
 
-					// Need to reorder the object by channel.position
-					Object.keys(channels).forEach(key => {
-						channels[channels[key].position] = channels[key];
-						delete channels[key];
-					});
+            const memberStatus = document.createElement('span')
+            if (user.status === 'online') {
+              memberStatus.classList.add('jj-discord-user-status', 'jj-discord-user-online')
+            } else if (user.status === 'idle') {
+              memberStatus.classList.add('jj-discord-user-status', 'jj-discord-user-idle')
+            } else {
+              memberStatus.classList.add('jj-discord-user-status', 'jj-discord-user-offline')
+            }
 
-					// Loop thorugh the object and display the results
-					Object.keys(channels).forEach(key => {
-						const channel = channels[key];
+            membersListItem.appendChild(createAvatar(user.avatar_url))
+            membersListItem.appendChild(memberStatus)
+            membersListItem.appendChild(createUsername(user))
 
-						const channelItem = document.createElement('li');
-						channelItem.innerText = channel.name;
+            if (user.bot) {
+              membersListItem.appendChild(createBotTag())
+            }
 
-						const channelMembersList = document.createElement('ul');
+            if (options.game == 1 && user.game !== undefined && !user.bot) {
+              const memberGame = document.createElement('span')
+              memberGame.classList.add('jj-discord-game')
+              memberGame.innerText = ` - ${user.game.name}`
+              membersListItem.appendChild(memberGame)
+            }
 
-						channel.members.forEach(member => {
-							const memberItem = document.createElement('li');
-							memberItem.classList.add('jj-discord-user');
+            membersList.appendChild(membersListItem)
+          })
+        }
 
-							// Append avatar and username to the left Div
-							const divLeft = document.createElement('div');
-							divLeft.classList.add('jj-discord-user-left');
-							divLeft.appendChild(createAvatar(member.avatar_url));
-							divLeft.appendChild(createUsername(member));
+        // Need to reorder the object by channel.position
+        Object.keys(channels).forEach(key => {
+          channels[channels[key].position] = channels[key]
+          delete channels[key]
+        })
 
-							if (member.bot) {
-								divLeft.appendChild(createBotTag());
-							}
+        // Loop thorugh the object and display the results
+        Object.keys(channels).forEach(key => {
+          const channel = channels[key]
 
-							// Append microphone/headphone icons
-							const divRight = document.createElement('div');
-							divRight.classList.add('jj-discord-user-right');
-							if (member.self_mute) {
-								divRight.insertAdjacentHTML('beforeend', `<img src="${options.root}/media/mod_discord/images/microphone.svg" alt="">`);
-							}
-							if (member.self_deaf) {
-								divRight.insertAdjacentHTML('beforeend', `<img src="${options.root}/media/mod_discord/images/headset.svg" alt="">`);
-							}
+          const channelItem = document.createElement('li')
+          channelItem.innerText = channel.name
 
-							memberItem.appendChild(divLeft);
-							memberItem.appendChild(divRight);
+          const channelMembersList = document.createElement('ul')
 
-							// Append to the list
-							channelMembersList.appendChild(memberItem);
-						});
+          channel.members.forEach(member => {
+            const memberItem = document.createElement('li')
+            memberItem.classList.add('jj-discord-user')
 
-						channelItem.appendChild(channelMembersList);
-						wrapper.appendChild(channelItem);
-					});
-				})
-			}).catch(err => {
-				console.log(err)
-			});
-		}
-	});
+            // Append avatar and username to the start Div
+            const divStart = document.createElement('div')
+            divStart.classList.add('jj-discord-user-start')
+            divStart.appendChild(createAvatar(member.avatar_url))
+            divStart.appendChild(createUsername(member))
 
-	const createAvatar = (url) => {
-		const avatar = document.createElement('img');
-		avatar.setAttribute('src', url);
-		avatar.classList.add('jj-discord-avatar');
+            if (member.bot) {
+              divStart.appendChild(createBotTag())
+            }
 
-		return avatar;
-	}
+            // Append microphone/headphone icons
+            const divEnd = document.createElement('div')
+            divEnd.classList.add('jj-discord-user-end')
+            if (member.self_mute) {
+              divEnd.insertAdjacentHTML('beforeend', `<img src="${options.root}/media/mod_discord/images/microphone.svg" alt="">`)
+            }
+            if (member.self_deaf) {
+              divEnd.insertAdjacentHTML('beforeend', `<img src="${options.root}/media/mod_discord/images/headset.svg" alt="">`)
+            }
 
-	const createBotTag = () => {
-		const bot = document.createElement('span');
-		bot.classList.add('jj-discord-bot');
-		bot.innerText = 'BOT';
+            memberItem.appendChild(divStart)
+            memberItem.appendChild(divEnd)
 
-		return bot;
-	}
+            // Append to the list
+            channelMembersList.appendChild(memberItem)
+          })
 
-	const createUsername = (user) => {
-		const username = document.createElement('span');
-		username.innerText = user.nick || user.username;
-
-		return username;
-	}
-})();
+          channelItem.appendChild(channelMembersList)
+          wrapper.appendChild(channelItem)
+        })
+      })
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+})()

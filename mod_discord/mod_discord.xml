@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="3.9" client="site" method="upgrade">
+<extension type="module" version="4.0" client="site" method="upgrade">
     <name>JJ Discord</name>
     <author>JoomJunk</author>
 	<creationDate>25th July 2019</creationDate>
-	<copyright>Copyright (C) 2011 - 2019 JoomJunk</copyright>
+	<copyright>Copyright (C) 2011 - 2022 JoomJunk</copyright>
 	<license>https://gnu.org/licenses/gpl-3.0.html</license>
 	<authorEmail>admin@joomjunk.co.uk</authorEmail>
 	<authorUrl>https://www.joomjunk.co.uk</authorUrl>
